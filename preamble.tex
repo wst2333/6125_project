@@ -1,0 +1,63 @@
+% ICLR loads natbib through its official style. Pass color options before any
+% package can load xcolor indirectly.
+\PassOptionsToPackage{table,dvipsnames}{xcolor}
+\usepackage{xcolor}
+\usepackage{iclr2027_conference,times}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{booktabs}
+\usepackage{nicefrac}
+\usepackage{microtype}
+\usepackage{graphicx}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{bm}
+\usepackage{multirow}
+\usepackage{stackengine}
+\usepackage{makecell}
+\usepackage{array}
+\usepackage{soul}
+\usepackage{xspace}
+
+% fontawesome5 is used only by the related-work table. The fallback labels keep
+% the paper compilable on minimal TeX installations.
+\IfFileExists{fontawesome5.sty}{%
+  \usepackage{fontawesome5}
+}{%
+  \newcommand{\faAlignLeft}{\textsf{Txt}}
+  \newcommand{\faCamera}{\textsf{Vis}}
+  \newcommand{\faProjectDiagram}{\textsf{Kin}}
+  \newcommand{\faLayerGroup}{\textsf{St.}}
+  \newcommand{\faBoxOpen}{\textsf{Box}}
+  \newcommand{\faShapes}{\textsf{Seg}}
+  \newcommand{\faLongArrowAltRight}{\ensuremath{\rightarrow}}
+  \newcommand{\faArrowsAltV}{\ensuremath{\updownarrow}}
+}
+
+\usepackage{hyperref}
+\usepackage[capitalize,noabbrev]{cleveref}
+
+\definecolor{tableblue}{RGB}{232,239,247}
+
+\newcommand{\tocite}{\textcolor{red}{[TOCITE]~}}
+\newcommand{\todo}[1]{{\color{red}[TODO\@: #1]}}
+\newcommand{\method}{\textsc{MotionART}\xspace}
+
+\newcommand{\cxz}[1]{{\color{purple}[cxz: #1]}}
+\newcommand{\cxzm}[1]{{\color{purple}#1}}
+\newcommand{\heading}[1]{\vspace{2pt}\noindent\textbf{#1.}}
+\newcommand{\ruijie}[1]{{\color{blue}ruijie: #1}}
+
+\newcommand{\best}[1]{\textcolor{Maroon}{\textbf{#1}}}
+\newcommand{\secondbest}[1]{\textcolor{RoyalBlue}{\textbf{#1}}}
+
+\newcommand{\eg}{\emph{e.g.}\xspace}
+\newcommand{\ie}{\emph{i.e.}\xspace}
+\newcommand{\cf}{\emph{cf.}\xspace}
+\newcommand{\etal}{\emph{et al.}\xspace}
+\newcommand{\etc}{\emph{etc.}\xspace}
+\newcommand{\wrt}{w.r.t.\xspace}
+\newcommand{\vs}{\emph{vs.}\xspace}
+\newcommand{\dof}{DoF\xspace}

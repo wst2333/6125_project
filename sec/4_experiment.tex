@@ -1,0 +1,120 @@
+\section{Experiments}%
+
+\label{sec:experiments}
+
+We evaluate the performance of \method in part segmentation and articulation estimation for both rest and articulated states.
+Our experiments mainly answer three questions:
+(1) whether two-state reasoning improves the model generalization over single-state reasoning;
+(2) whether the network achieves consistent predictions between two states and whether the Siamese framework further improves the consistency;
+and (3) whether the recovered articulation is good enough to be exported as a URDF asset for downstream robot simulation.
+We first describe the evaluation protocol, then report comparisons with state-of-the-art methods, ablations, and an application in RoboTwin.
+
+\input{tables/1_main_combined}
+
+\subsection{Experimental Setup}
+\label{sec:exp_setup}
+
+\heading{Training Datasets}
+We train \method on the PartNet-Mobility~\cite{Mo_2019_CVPR} and GRScenes~\cite{wang2024grutopia} datasets.
+For PartNet-Mobility, we follow the train-test split of SINGAPO~\cite{liusingapo}; for GRScenes, we use all articulated assets for training.
+We set the maximum number of parts to $K_{\max}=16$ and discard objects with more than 16 articulated parts, yielding 3,800 training objects across 50 categories.
+
+\heading{Testing Datasets}
+For evaluation, we use the PartNet-Mobility test split, which contains 7 common articulated-object categories, and the Lightwheel benchmark~\cite{lightwheel_simready_2025}, which contains 243 high-quality articulated objects spanning 14 categories.
+For every object, we sample two distinct physical states and convert them into a pair of unorganized point clouds.
+Since the two point clouds are sampled independently, the model does not rely on explicit point correspondence between the states.
+
+
+% \heading{Baselines.}
+% We compare against representative methods for segmentation, retrieval-based reconstruction, and feed-forward articulation inference.
+% The baselines include a naive part-matching baseline, SINGAPO~\cite{liusingapo}, PartField~\cite{liu2025partfield}, P3SAM~\cite{ma2025p3sam}, Articulate AnyMesh~\cite{qiu2025articulate}, and Particulate~\cite{li2025particulate}.
+% For methods that can benefit from mesh connectivity, we report connectivity-assisted variants marked by $^\dagger$.
+% This protocol separates the effect of geometric connectivity from the ability to infer articulation from the observed states.
+
+\heading{Implementation details}
+Each input state is represented by a point cloud sampled from the corresponding mesh.
+Following Particulate~\cite{li2025particulate}, we augment point coordinates with surface normals and PartField features.
+At test time, \method uses a single forward branch to predict the part masks, kinematic tree, motion type, joint axes, and motion ranges, \ie, the reverse-order branch and cycle-consistency objective are used only during training. Training the main model takes approximately three days on 4 NVIDIA H100 GPUs. More details can be found in~\Cref{sec:supp_data_processing}.
+
+\heading{Metrics}
+We evaluate both part recovery and articulated reconstruction quality.
+For evaluation on the rest state, we report generalized IoU (gIoU), part-wise Chamfer distance (PC), and mean IoU (mIoU) between predicted and ground-truth parts.
+For evaluation on the articulated state, we actuate the predicted parts using the predicted joint parameters and report part-wise gIoU, PC, and the whole-object Chamfer distance (OC).
+The metrics in the articulated state are usually lower than in the rest state because errors in segmentation, kinematic hierarchy, joint axes, and motion range accumulate after actuation.
+Unless otherwise stated, we use the penalty protocol for unmatched/missing parts as in~\cite {li2025particulate}, which discourages methods from producing visually plausible but incomplete decompositions.
+
+\subsection{Main Results}
+\label{sec:exp_results}
+
+\heading{Part segmentation at the rest state}
+\Cref{tab:combined-comparison} (\textbf{Res-Pose Seg.}) shows the quality of part decomposition in the rest state.
+On both PartNet-Mobility and Lightwheel, \method achieves the best gIoU (0.544 \vs 0.322), PC (0.156 \vs 0.168), and mIoU (0.647 \vs 0.576) among the compared methods,
+indicating that the second-observed state helps the network identify which geometry should move as a rigid part.
+This improvement is especially important for articulated objects whose static geometry is ambiguous, such as cabinets with visually similar panels or appliances whose movable components are flush with the body.
+% \cxz{refer to image example.}
+As shown in~\Cref{fig:qualitative_results}, compared with single-state feed-forward baselines, the two-state formulation provides direct evidence of rigid part segmentation from relative motion rather than forcing the model to infer articulation only from category-level priors as in~\cite{li2025particulate}.
+
+\input{figs/4_result_compare}
+% \input{tables/1_main}
+% \input{tables/1_main_seg}
+
+
+\heading{Articulated-state reconstruction}
+\Cref{tab:combined-comparison} (\textbf{Articulated State}) evaluates whether the recovered articulation remains correct after applying the predicted motion.
+\method achieves the best performance across all articulated-state metrics, including whole-object Chamfer distance (reducing it from 0.09 to 0.03, a 66\% improvement).
+Because this evaluation actuates each predicted joint to its maximum extent, the result validates more than static segmentation: the predicted kinematic structure, motion type, axis, and range must be mutually consistent.
+The gap between rest-state and articulated-state performance also reveals why the evaluation should include motion-based metrics; a method can segment parts reasonably while still producing an incorrect joint that fails after actuation.
+\Cref{fig:qualitative_results} visualizes representative predictions across object categories.
+All state-of-the-art methods struggle with the ``switch'' on ``microwave'',
+the ``arm'' of the ``Mixer''.
+\method better captures the motion of these small, protruding parts, which are often visually ambiguous in the rest state but become more distinguishable when observing how they move.
+This supports the quantitative trend: observing how geometry changes gives the model a more reliable cue for separating functional parts and predicting their motion.
+
+% \input{tables/2_main_art}
+\input{tables/3_ablation}
+
+% \heading{Qualitative results}
+
+
+\subsection{Ablation Study}
+\label{sec:exp_ablations}
+
+We conduct thorough ablations to understand the contribution of different design choices in \method.
+Results are summarized in \Cref{tab:ablation} and discussed in detail below.
+
+\heading{Importance of Motion States}
+Learning from different states serves as a cornerstone of our method,
+which formulates articulation recovery as a corresponding motion matching problem.
+To measure out motion evidence, we compare the default two-state model with a single-state variant.
+When only one state is observed, the quantitative results drop significantly: gIoU drops from 0.396 to 0.305 on the rest state and from 0.382 to 0.293 on the articulated state (nearly 25\% drop), confirming that the second state provides critical evidence for part segmentation and articulation inference.
+
+\heading{Ablations on Number of States}
+Our default model uses two states, but the architecture can be flexibly extended to more states.
+To verify whether more states can further contribute to performance,
+we train a multi-state variant.
+The results show that more states do improve performance,
+with the 4-state model achieving 0.424 gIoU on the articulated state,
+and the 8-state model further improved to 0.447,
+but with diminishing returns and increased inference time.
+
+\heading{Ablations on Masked attention}
+The attention mask further improves segmentation quality by encouraging part queries to focus on their activated regions across transformer layers.
+
+\heading{Ablations on Siamese Network}
+We further demonstrate that the Siamese architecture, along with the cycle-consistency loss, improves the consistency of predictions between the two states.
+The Siamese model achieves the best or second-best performance compared with the single-branch models,
+even though the single-branch model with 8 states has more input information.
+However, removing the cycle-consistency loss from the Siamese model leads to a significant drop in performance, especially for articulated states, indicating that the cycle loss is crucial for stabilizing part identity and motion direction when the state order is reversed.
+
+\input{figs/4_application}
+
+\subsection{Application}
+\label{sec:exp_application}
+
+We further test whether the predicted articulation can be exported as a usable robot-simulation asset.
+To this end, we convert the outputs to a URDF.
+% predicted part masks into link meshes and instantiate the predicted kinematic tree, joint types, axes, and ranges as a URDF.
+As shown in~\cref{fig:_application}, the generated drawer and door assets can be loaded into RoboTwin and opened by a robot arm through contact.
+% This application checks a property that static reconstruction metrics do not directly measure.
+For the robot to open the generated asset, the predicted movable part, joint axis, and motion range must remain mutually consistent under physics-based interaction.
+The RoboTwin result, therefore, provides a compact qualitative validation that two-state geometry can support not only offline articulation recovery but also downstream manipulation of generated articulated assets.

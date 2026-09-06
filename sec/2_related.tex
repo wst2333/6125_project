@@ -1,0 +1,34 @@
+\section{Related Work}%
+
+% \ruijie{
+As summarized in Table~\ref{tab:related_articulation}, we divide existing articulated reconstruction approaches into three types: optimization-based, learning-based, and generation-based methods.
+
+\paragraph{Optimization-based articulated reconstruction.} 
+An important line of work studies articulated objects through per-instance reconstruction from multiple observations. Early methods~\cite{liu2023paris,tseng2022cla,wei2022self} recover geometry and articulation by fitting a deformable NeRF~\cite{mildenhall2020nerf} to a specific object observed across multiple views or articulation states. More recent dynamic reconstruction methods~\cite{liu2025artgs,wu2025reartgs,ai2026aim,shen2025gaussianart,liu2025videoartgs,guo2026articulat3d} further exploit motion videos or continuous interaction to disentangle moving parts via Gaussian Splatting~\cite{kerbl20233d}. However, they are still optimization-intensive pipelines whose quality depends on how well the observations cover the scene.
+Therefore, a generalizable end-to-end articulation estimation is what physical-world modeling really needs: not only for fast inference but also for a full understanding of physical cues.
+
+\paragraph{Learning-based articulated reconstruction.} 
+Recent learning-based methods usually predict articulated structure from a single image~\cite{chen2024urdformer,li2026monoart} or a single 3D observation~\cite{che2024op,Goyal_2025_ICCV,li2025particulate,gao2025meshart,song2025magicarticulate,li2025urdfanything}. 
+For example, Particulate~\cite{li2025particulate} takes a single point cloud as input, and outputs the part segmentation of the point cloud and the kinematic parameter of those parts. 
+Compared with per-instance optimization, these feed-forward methods are much more scalable and can perform inference directly and quickly. 
+However, these methods also have limitations.
+Although they curate diverse articulation datasets for training, their generalization remains unsatisfactory, even within the same category. 
+% This limitation becomes more severe in open-world settings, where object geometry and kinematic layouts can differ substantially from those seen during training. 
+We argue that this is because they use only a single static state as conditioning for predicting action-based articulation, which makes the task itself ambiguous: a single observation may correspond to different articulation patterns, even within the same category.
+Therefore, we propose using multi-state observations as conditioning and designing an action-wise framework to resolve the ambiguity. 
+% Furthermore, we prove that, with the help of VLMs, even a single state input can be extended to multiple states as conditioning for our model, outperforming state-of-the-art methods in a fair comparison.
+
+\paragraph{Generation-based articulated reconstruction.} 
+Another direction focuses on constructing articulated assets by retrieval, composition, or generation rather than directly inferring articulation from visual observations. 
+These methods~\cite{liusingapo,lei2023nap,liu2024cage,chen2025freeart3d,chen2025ArtiLatent,wu2026urdfanything_plus,Su_2025_CVPR} assemble reusable parts, invoke articulation-aware priors, or combine generation with structural reasoning to produce simulation-ready articulated assets. 
+For example, URDF-Anything+ takes an image and a mesh as inputs and leverages DiT~\cite{peebles2023scalable,chen2025autopartgen} to autoregressively generate articulated objects.
+Recent multimodal frameworks~\cite{wang2025kinematify,qiu2025articulate,lu2025dreamart,wu2025dipo} further advance articulated asset generation using generative priors from VLMs~\cite{hurst2024gpt,gemini_image_pro}. 
+Despite their impressive generalization in open-world scenes, they suffer from slow inference, LLM illusions, and difficulty handling complex topology.
+% }
+
+
+
+% \paragraph{Reasoning from observed state change.} Our work is motivated by the observation that articulation is most reliably revealed by how an object changes across states. Prior methods have leveraged multiple observations mainly in optimization-heavy reconstruction pipelines~\cite{liu2023paris,tseng2022cla,wei2022self}, where motion evidence is absorbed through iterative fitting rather than encoded by a generalizable feed-forward predictor. In contrast, we study articulation inference from two observed 3D states of the same object within a single forward pass. This setting lies between single-state prediction and full reconstruction: it preserves factual motion evidence from state change while avoiding per-instance test-time optimization. More importantly, our method does not merely treat the second state as additional input. Instead, it uses shared part queries to explain both states with a common part ordering, and refines query-to-point reasoning through mask-guided attention feedback. The shared queries establish cross-state part correspondence, while the mask-guided refinement localizes moving parts in each state before kinematic decoding. This distinction separates our method from single-state feed-forward baselines, generic mask-based part segmentation methods, and optimization-based reconstruction pipelines, and underlies the stronger robustness and cross-scene generalization observed in our experiments.
+
+
+\label{sec:related}

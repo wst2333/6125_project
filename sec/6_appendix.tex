@@ -1,0 +1,100 @@
+\clearpage
+
+\begin{center}
+    {\Large\textbf{What Reveals 3D Articulation? Learning from Motion}}
+
+    \vspace{0.1in}
+    % {\Large\textbf{\textit{Supplementary Material}}}
+    {{\textit{Supplementary Material}}}
+
+    \vspace{0.1in}
+    % Anonymous project page: \url{}
+
+\end{center}
+
+\section{Related Work}
+\label{sec:supp_related_work}
+
+
+We provide a comparison table of related works as shown in~\Cref{tab:related_articulation}.
+\input{tables/0_related_work}
+
+\section{Implementation Details}
+\label{sec:supp_details}
+
+\subsection{Data Processing}
+\label{sec:supp_data_processing}
+
+We preprocess articulated assets from URDF and USD sources into a unified representation for two-state articulation learning. The pipeline first converts articulated objects into normalized meshes with part-level motion annotations, then samples point clouds from the exported meshes to cache training supervision.
+
+\paragraph{URDF processing.}
+For URDF assets, we parse each object's kinematic tree and mesh references, then export two canonical articulation states. Each processed object is written to an object-level directory, where \texttt{pos\_000} corresponds to the all-zero joint state and \texttt{pos\_001} corresponds to the all-one joint state. For each state, the links are transformed by forward kinematics and merged into a single mesh. We filter out invalid assets that contain no valid mesh, only one articulated part, or more than the maximum allowed number of parts. In our preprocessing, we set this maximum to 16.
+% 
+To keep the two states geometrically comparable, we compute a shared normalization transform over all exported states of the same object and apply it consistently to every posed mesh. The same normalization is applied to motion annotations: prismatic ranges are scaled, and revolute or prismatic axes are shifted into the normalized coordinate frame.
+
+\paragraph{USD processing.}
+For USD assets, we follow the same output convention while extracting articulation information from USD physics joints. We traverse the USD stage, identify revolute, prismatic, and fixed joints, recover parent-child link relationships, and compute each joint axis and anchor in world coordinates. We then solve forward kinematics for the two articulation states, export each posed mesh, and save the same metadata files as in the URDF pipeline.
+% 
+The USD pipeline also normalizes all generated states of an object jointly. After all posed meshes are exported, we compute a shared object-level center and scale, rewrite the normalized OBJ files, and transform the saved Plucker axes and motion ranges accordingly. 
+
+\paragraph{Point sampling and cached supervision.}
+After mesh export, we cache point-level supervision from each normalized mesh. For each mesh, we sample surface points with their normals and assign them to the articulated parts using the vertex-to-part labels. To better preserve geometric discontinuities between parts, training samples combine uniformly sampled surface points with points sampled near sharp edges. If no sharp edges are detected, the sampler falls back to uniform surface sampling.
+% 
+For training, each cached point cloud stores the sampled point cloud, normals, point-to-part labels, a binary indicator for sharp-edge samples, the part hierarchy, and per-part motion annotations.
+% 
+This cached representation removes the need to repeatedly load articulated meshes during training and provides a unified supervision format across URDF- and USD-derived objects.
+
+\subsection{Training Loss Details}
+\label{sec:supp_loss_details}
+
+For cycle consistency, we enforce that the Siamese branch produces symmetric predictions. Given the reserve-order states as input, we hope the network produces part segmentation results that are consistent with those of the forward-order branch, but with opposite articulation motion. Therefore, we first swap the order of part segmentation results in the reverse branch from $\{\hat{M}_{r}^{(s_1)},\hat{M}_{r}^{(s_0)}\}$ to $\{\hat{M}_{r}^{(s_0)},\hat{M}_{r}^{(s_1)}\}$, matching the corresponding segmentation masks in forward branch.
+Then we maintain the axis of articulation motion and flip the predicted revolute range and prismatic range from $\alpha_r = \{\alpha_{\min}, \alpha_{\max}\}, l_r = \{l_{\min}, l_{\max}\}$ to $\dot{\alpha}_r = \{\alpha_{\max}, \alpha_{\min}\}, \dot{l}_r = \{l_{\max}, l_{\min}\}$, representing opposite motion.
+In this way, the model faithfully learns the underlying physical laws hidden in state changes.
+
+
+\section{Additional Experimental Results}
+\label{sec:supp_additional_experiments}
+
+\paragraph{Additional Ablations.}
+We provide additional ablation results under two evaluation protocols.
+The no-penalty protocol reports part-wise metrics after matching predicted and ground-truth parts without penalizing unmatched parts, while the penalty protocol assigns penalties to unmatched predictions or missing ground-truth parts.
+Reporting both protocols helps separate two effects: how well a model aligns the parts it finds and whether it recovers all functional parts required for a complete articulated asset.
+
+\input{tables/5_supp_ablation}
+
+\paragraph{Additional Visualizations.}
+
+We provide additional visualizations in~\Cref{fig:supp_results} and in the video attached to the supplementary folder.
+
+\subsection{Failure Case Analysis}
+\label{sec:supp_failure_case}
+
+\input{figs/7_failure_case}
+\input{figs/6_supp_results}
+
+A representative failure mode of \method occurs on hierarchical objects with multiple coupled rotation axes, as shown in~\Cref{fig:failure_case}.
+In these cases, the motion of a child part cannot be explained by an independent joint in a fixed global frame: the child joint axis is itself transformed by the motion of its parent link.
+When the parent joint rotates, the coordinate frame in which the child joint is defined also rotates, so the observed displacement of the child part is a composition of the parent motion and the child's own local articulation.
+Such configurations are relatively rare in our current training data, making it difficult for a feed-forward model to learn a reliable prior for this form of nested kinematic dependency.
+
+This failure mode is also sensitive to error accumulation along the predicted kinematic tree.
+If the parent edge is assigned an inaccurate motion type, axis, pivot, or range, the resulting parent transform changes the reference frame used to interpret all descendant joints.
+The child prediction must then compensate for both its own articulation error and the residual error inherited from the parent, which can produce substantially larger deviations after forward kinematic actuation than the per-joint prediction error would suggest.
+Therefore, although two-state geometry provides strong evidence for ordinary articulated motion, deeply coupled multi-axis structures remain challenging when the training distribution contains few comparable examples and when small upstream errors propagate to downstream parts.
+
+\section{Limitations.}
+Our current formulation assumes that the two observations depict the same object under compatible states and that the target articulation can be represented by a tree-structured URDF.
+The method may struggle when the two states differ due to severe reconstruction artifacts, non-rigid deformation, missing geometry, or contacts that hide the moving component.
+
+\section{Statistical Reporting and Impact}
+\label{sec:supp_impl_compute_impact}
+
+\paragraph{Statistical reporting.}
+For all experimental results, we report a single run under the evaluation protocol.
+All reported metrics are computed on the same evaluation split for a given benchmark, and ablations change only the stated model component or training objective.
+
+\paragraph{Broader impact.}
+\method can help convert observed or generated articulated objects into simulation-ready assets, benefiting robotics, embodied AI, and virtual-environment construction.
+At the same time, incorrect articulation predictions can lead to unreliable simulated interactions, especially if generated assets are used for downstream robot policy training without validation.
+We therefore view the predicted URDF assets as candidates that should be checked in simulation before deployment on physical robots, and we encourage users to preserve provenance information for generated or converted assets.
+

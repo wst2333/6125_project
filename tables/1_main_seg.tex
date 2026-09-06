@@ -1,0 +1,50 @@
+
+\begin{table}[t]
+\centering
+\small
+\caption{
+\textbf{Evaluation on the rest states.}
+We report generalized IoU (gIoU), part-wise Chamfer distance (PC), and mean IoU (mIoU), all computed with penalties applied to unmatched parts.
+% $^\dagger$: leveraging mesh connectivity.
+--: SINGAPO assumes mesh connectivity between parts and is not applicable to the PartNet-Mobility test set.
+1@10: computed using the best sample out of 10 predictions per instance.
+Colors: \best{best} and \secondbest{second best}.
+}%
+\label{tab:rest-comparison}
+\vspace{-1em}
+\setlength{\tabcolsep}{3pt}
+\renewcommand{\arraystretch}{1.05}
+% \resizebox{\linewidth}{!}{%
+\begin{tabular}{@{}lcccccc@{}}
+\toprule
+ & \multicolumn{3}{c}{\textbf{Lightwheel}} & \multicolumn{3}{c}{\textbf{PartNet-Mobility}} \\
+\cmidrule(lr){2-4}\cmidrule(lr){5-7}
+%
+\textbf{Method}
+& gIoU$\uparrow$
+& PC$\downarrow$
+& mIoU$\uparrow$
+& gIoU$\uparrow$
+& PC$\downarrow$
+& mIoU$\uparrow$ \\
+%
+% \midrule
+%
+% Naive Baseline & 0.018 & 0.285 & 0.413 & 0.296 & 0.210 & 0.612 \\
+% SINGAPO~\cite{liusingapo}        & -0.116 & 0.201 & 0.272 & -- & -- & -- \\
+% SINGAPO~\cite{liusingapo} (1@10)        & -0.096 & 0.190 & 0.277 & -- & -- & -- \\
+
+\midrule
+PartField~\cite{liu2025partfield} & 0.079 & \best{0.106} & 0.264  & 0.183 & 0.123 & 0.361 \\
+P3SAM~\cite{ma2025p3sam}    & 0.122 & 0.177 & 0.411 & -0.116 & 0.261 & 0.267 \\
+SINGAPO~\cite{liusingapo}   & -0.097 & 0.234 & 0.273 & 0.262 & 0.124 & 0.468 \\
+SINGAPO~\cite{liusingapo} (1@10)  & -0.050 & 0.221 & 0.297 &   0.271 & 0.117 & 0.471 \\
+Articulate AnyMesh~\cite{qiu2025articulate}   & 0.172 & 0.190 & 0.452 & 0.383 & 0.104 & 0.542 \\
+Particulate~\cite{li2025particulate} & \best{0.332} & \secondbest{0.168} & \best{0.576} & \secondbest{0.880} & \secondbest{0.003} & \secondbest{0.884}\\
+
+
+ours (single query)          & {0.489} & {0.163} & {0.578} & \best{0.924} & \best{0.002} & \best{0.936} \\
+\bottomrule
+\end{tabular}%
+% } %
+\end{table}

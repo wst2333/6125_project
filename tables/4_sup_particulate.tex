@@ -1,0 +1,216 @@
+
+\begin{table}[t]
+\centering
+\small
+\setlength{\tabcolsep}{3pt}
+\renewcommand{\arraystretch}{1.05}
+\resizebox{\linewidth}{!}{%
+\begin{tabular}{@{}lcccccc@{}}
+\toprule
+ & \multicolumn{3}{c}{\textbf{Lightwheel}} & \multicolumn{3}{c}{\textbf{PartNet-Mobility}} \\
+\cmidrule(lr){2-4}\cmidrule(lr){5-7}
+%
+\textbf{Method}
+& gIoU$\uparrow$
+& PC$\downarrow$
+& mIoU$\uparrow$
+& gIoU$\uparrow$
+& PC$\downarrow$
+& mIoU$\uparrow$ \\
+
+\midrule
+
+\underline{\emph{Without Penalty}} & & & & & & \\
+Naive Baseline & \secondbest{0.687} & \secondbest{0.019} & \secondbest{0.687} & \best{0.897} & 0.003 & \best{0.897} \\
+SINGAPO~\cite{liusingapo}       & 0.184 & 0.044 & 0.370  &-- & -- & -- \\
+SINGAPO~\cite{liusingapo} (1@10)        & 0.250 & 0.033 & 0.404 &-- & -- & -- \\
+Particulate           & 0.486\tabstd{0.007} & 0.028\tabstd{0.001} & 0.541\tabstd{0.005} & 0.882\tabstd{0.006} & \secondbest{0.002}\tabstd{0.000} & 0.884\tabstd{0.005}\\
+Particulate YQ         & 0.492 & 0.029 & 0.544  & 0.883 & 0.002 & 0.887 \\
+Particulate Retrain        & 0.425 & 0.039 & 0.511  & 0.878 & 0.002 & 0.877 \\
+
+\midrule
+
+PartField$^\dagger$   & 0.092 & 0.099 & 0.268 & 0.370 & 0.040 & 0.421 \\
+P3SAM$^\dagger$      & 0.421 & 0.042 & 0.523 & 0.390 & 0.023 & 0.403 \\
+SINGAPO~\cite{liusingapo}$^\dagger$   & 0.278 & 0.051 & 0.394  & 0.538 & 0.008 & 0.570 \\
+SINGAPO(best)~\cite{liusingapo} (1@10)$^\dagger$         & 0.407 & 0.036 & 0.476 & 0.563 & 0.006 & 0.585 \\
+Articulate AnyMesh~\cite{qiu2025articulate}$^\dagger$   & 0.567 & 0.025 & 0.608 & 0.581 & 0.025 & 0.621 \\
+Particulate$^\dagger$  & \best{0.726}\tabstd{0.052} & \best{0.010}\tabstd{0.003} & \best{0.744}\tabstd{0.047} & \secondbest{0.883}\tabstd{0.003} & \best{0.001}\tabstd{0.000} & \secondbest{0.885}\tabstd{0.003} \\
+Particulate YQ       & 0.714 & 0.012 & 0.734  & 0.885 & 0.002 & 0.887 \\
+Particulate Retrain        & 0.681 & 0.013 & 0.702  & 0.880 & 0.001 & 0.882 \\
+
+
+\midrule 
+\midrule     % With Penalty
+
+\underline{\emph{With Penalty}} & & & & & & \\
+Naive Baseline & 0.018 & 0.285 & 0.413 & 0.296 & 0.210 & 0.612 \\
+SINGAPO~\cite{liusingapo}        & -0.116 & 0.201 & 0.272 & -- & -- & -- \\
+SINGAPO~\cite{liusingapo} (1@10)        & -0.096 & 0.190 & 0.277 & -- & -- & -- \\
+Particulate           & \secondbest{0.183}\tabstd{0.005} & \best{0.163}\tabstd{0.001} & 0.430\tabstd{0.003} & \secondbest{0.879}\tabstd{0.006} & \secondbest{0.003}\tabstd{0.000} & \secondbest{0.883}\tabstd{0.005} \\
+
+Particulate YQ          & 0.184 & 0.160 & 0.433 & 0.885 & 0.003 & 0.888 \\
+
+Particulate Retrain        & 0.163 & 0.161 & 0.416  & 0.872 & 0.003 & 0.876 \\
+
+
+
+
+\midrule
+
+
+
+
+PartField~\cite{liu2025partfield}$^\dagger$  & 0.079 & 0.106 & 0.264  & 0.183 & 0.123 & 0.361 \\
+P3SAM~\cite{ma2025p3sam}$^\dagger$     & 0.122 & 0.177 & 0.411 & -0.116 & 0.261 & 0.267 \\
+SINGAPO~\cite{liusingapo}$^\dagger$   & -0.097 & 0.234 & 0.273 & 0.262 & 0.124 & 0.468 \\
+SINGAPO~\cite{liusingapo} (1@10)$^\dagger$  & -0.050 & 0.221 & 0.297 &   0.271 & 0.117 & 0.471 \\
+Articulate AnyMesh~\cite{qiu2025articulate}$^\dagger$   & 0.172 & 0.190 & \secondbest{0.452} & 0.383 & 0.104 & 0.542 \\Particulate$^\dagger$ & \best{0.332}\tabstd{0.034} & \secondbest{0.168}\tabstd{0.002} & \best{0.576}\tabstd{0.035} & \best{0.880}\tabstd{0.003} & \secondbest{0.003}\tabstd{0.001} & \best{0.884}\tabstd{0.003}\\
+
+Particulate YQ$^\dagger$ & 0.331 & 0.165 & 0.569 & 0.881 & 0.002 & 0.885 \\
+Particulate Retrain        & 0.282 & 0.175 & 0.532  & 0.876 & 0.002 & 0.879 \\
+
+\bottomrule
+\end{tabular}%
+} 
+\caption{
+\textbf{Part segmentation results}.
+We report generalized IoU (gIoU), part-wise Chamfer distance (PC), and mean IoU (mIoU), all computed with penalties applied to unmatched parts.
+$^\dagger$: leveraging mesh connectivity.
+--: SINGAPO retrieves part geometries from a part library on the PartNet-Mobility test set, which assumes mesh connectivity. Therefore, its metrics without leveraging connectivity are left empty.
+1@10: computed using the best sample out of 10 predictions per instance.
+Colors: \best{best} and \secondbest{second best}.
+}
+\vspace{-1em}
+\label{tab:rest-comparison}
+\end{table}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\begin{table}[t]
+\centering
+\small
+\setlength{\tabcolsep}{3pt}
+\renewcommand{\arraystretch}{1.05}
+\resizebox{\linewidth}{!}{%
+\begin{tabular}{@{}lcccccc@{}}
+\toprule
+ & \multicolumn{3}{c}{\textbf{Lightwheel}} & \multicolumn{3}{c}{\textbf{PartNet-Mobility}} \\
+\cmidrule(lr){2-4}\cmidrule(lr){5-7}
+%
+\textbf{Method} & gIoU$\uparrow$ & PC$\downarrow$ & OC$\downarrow$
+& gIoU$\uparrow$ & PC$\downarrow$ & OC$\downarrow$ \\
+
+\midrule
+
+
+
+
+
+\underline{\emph{Without Penalty}} & & & & & & \\
+
+
+
+
+Naive Baseline & \secondbest{0.680} & \best{0.056} & 0.018 & \best{0.897} & \best{0.011} & 0.027 \\
+SINGAPO~\cite{liusingapo}        & 0.178 & 0.173 & 0.011 & -- & -- & -- \\
+SINGAPO~\cite{liusingapo} (1@10)      & 0.243 & 0.096 & 0.012 & -- & -- & -- \\
+Particulate          & 0.464\tabstd{0.007} & 0.076\tabstd{0.003} & \best{0.008}\tabstd{0.000} & 0.845\tabstd{0.006} & 0.023\tabstd{0.003} & \secondbest{0.003}\tabstd{0.000}\\
+
+Particulate YQ         & 0.470 & 0.073 & 0.008 & 0.848 & 0.021 & 0.003 \\
+
+Particulate Retrain        & 0.404 & 0.104 & 0.009 & 0.839 & 0.019 & 0.003 \\
+
+\midrule
+
+
+
+
+
+SINGAPO~\cite{liusingapo}$^\dagger$   & 0.271 & 0.179 & 0.018  & 0.523 & 0.079 & 0.046 \\
+SINGAPO~\cite{liusingapo} (1@10)$^\dagger$         & 0.398 & 0.091 & 0.019 & 0.555 & 0.066 & 0.043 \\
+Articulate AnyMesh~\cite{qiu2025articulate}$^\dagger$   & 0.547 & 0.084 & 0.010 & 0.577 & 0.187 & 0.022 \\
+Particulate$^\dagger$  & \best{0.692}\tabstd{0.047} & \secondbest{0.062}\tabstd{0.004} & \secondbest{0.009}\tabstd{0.002} & \secondbest{0.846}\tabstd{0.003} & \secondbest{0.021}\tabstd{0.005} & \best{0.003}\tabstd{0.000} \\
+
+Particulate(YQ)$^\dagger$ & 0.680 & 0.067 & 0.008 & 0.847 & 0.028 & 0.003 \\
+
+Particulate Retrain        & 0.651 & 0.076 & 0.009 & 0.837 & 0.017 & 0.003 \\
+
+
+
+
+
+\midrule
+\midrule
+
+
+
+
+
+
+\ \underline{\emph{With Penalty}} & & & & & & \\
+Naive Baseline & 0.016 & 0.293 & 0.017 & 0.296 & 0.216 & 0.027 \\
+SINGAPO~\cite{liusingapo}     & -0.121 & 0.299 & 0.011 & -- & -- & -- \\
+SINGAPO~\cite{liusingapo} (1@10)  & -0.100 & 0.238 & 0.012 & -- & -- & -- \\
+Particulate          & \secondbest{0.165}\tabstd{0.005} & \best{0.200}\tabstd{0.002} & \best{0.008}\tabstd{0.000} & \secondbest{0.842}\tabstd{0.005} & \secondbest{0.024}\tabstd{0.003} & \secondbest{0.003}\tabstd{0.000}\\
+
+
+Particulate YQ & 0.166 & 0.193 & 0.008 & 0.846 & 0.023 & 0.003 \\
+
+
+Particulate Retrain        & 0.146 & 0.212 & 0.009 & 0.843 & 0.024 & 0.003 \\
+
+
+
+\midrule
+
+
+
+SINGAPO~\cite{liusingapo}$^\dagger$     & -0.102 & 0.329 & 0.018 &  0.255 & 0.184 & 0.046 \\
+SINGAPO~\cite{liusingapo} (1@10)$^\dagger$    & -0.056 & 0.261 & 0.019 &  0.264 & 0.168 & 0.041 \\
+Articulate AnyMesh~\cite{qiu2025articulate}$^\dagger$    & 0.158 & 0.237 & 0.010 & 0.378 & 0.251 & 0.022 \\
+Particulate$^\dagger$     & \best{0.305}\tabstd{0.030} & \secondbest{0.208}\tabstd{0.003} & \secondbest{0.009}\tabstd{0.002} & \best{0.843}\tabstd{0.003} & \best{0.022}\tabstd{0.005} & \best{0.003}\tabstd{0.000} \\
+
+
+Particulate YQ  & 0.304 & 0.208 & 0.008 & 0.846 & 0.028 & 0.003 \\
+
+Particulate Retrain        & 0.259 & 0.222 & 0.009 & 0.843 & 0.024 & 0.003 \\
+
+%Ours $^\dagger$  & 0.128 &  0.206 & 0.008 &  0.305 & 0.104 & 0.029\\
+\bottomrule
+\end{tabular}%
+}
+\caption{
+\textbf{Results evaluated using fully articulated geometries}, where every part is moved to its maximum extent.
+We report part-wise gIoU and PC as in \cref{tab:rest-comparison}, and whole-object Chamfer distance (OC),
+which measures the overall bidirectional Chamfer distance between the \emph{whole} predicted geometry and its GT counterpart.
+Notations ($^\dagger$, --, and 1@10): the same as \cref{tab:rest-comparison}.
+%
+%
+%
+Colors: \best{best} and \secondbest{second best}.
+}
+\vspace{-1em}
+\label{tab:full-comparison}
+\end{table}

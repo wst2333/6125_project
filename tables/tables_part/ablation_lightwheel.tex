@@ -1,0 +1,60 @@
+\begin{table}[t]
+\centering
+\small
+\setlength{\tabcolsep}{3pt}
+    %
+\resizebox{\linewidth}{!}{%
+\begin{tabular}{@{}lccccccccc@{}}
+\toprule
+ & \multirow{2}{*}{\textbf{Data}} & \multirow{2}{*}{\shortstack{\textbf{Part-} \\ \textbf{Field}}} & \multirow{2}{*}{\shortstack{\textbf{Axis} \\ \textbf{over-} \\ \textbf{param.}}} & \multicolumn{3}{c}{\textbf{Articulated state}} & \multicolumn{3}{c}{\textbf{Rest state}} \\
+\cmidrule(lr){5-7}\cmidrule(lr){8-10}
+ &  &  &  & gIoU$\uparrow$ & PC$\downarrow$ & OC$\downarrow$
+ & gIoU$\uparrow$ & PC$\downarrow$ & mIoU $\uparrow$ \\
+\midrule
+$\mathbb{A}$ & PM+GRS & $\checkmark$ & $\checkmark$
+& \best{0.259} &  \best{0.215} & \best{0.008} & \best{0.286} &  \secondbest{0.184} & \best{0.551} \\
+$\mathbb{B}$ & PM & $\checkmark$ & $\checkmark$
+& 0.231 & 0.227 & 0.013 & 0.252 & \best{0.175} & \secondbest{0.504} \\
+$\mathbb{C}$ & PM+GRS & $\checkmark$ & $\times$
+& \secondbest{0.236} & \secondbest{0.224} & \best{0.008} & \secondbest{0.262}  & 0.186 & 0.411 \\
+$\mathbb{D}$ & PM+GRS & $\times$ & $\checkmark$
+& 0.174 & 0.245 & \secondbest{0.009} & 0.195 & 0.201 & 0.491 \\
+\bottomrule
+\end{tabular}%
+}
+\caption{\textbf{Ablations} on training data (PM: PartNet-Mobility, GRS: GRSCenes), revolute axis over-parameterization and pre-trained PartField features, evaluated on (a subset of) the Lightwheel~\cite{simready2025} benchmark.
+Colors: \best{best} and \secondbest{second best}.
+}%
+\label{tab:ablation}
+\vspace{-1em}
+\end{table}
+
+
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+    
+%
+%
+%
+%
+%
+%

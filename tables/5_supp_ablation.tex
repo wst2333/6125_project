@@ -1,0 +1,95 @@
+\begin{table}[!htbp]
+    \centering
+    \caption{\textbf{Additional ablation results without unmatched-part penalty.}
+    We use the same ablation variants and metrics as in the main ablation table, but compute the part-wise metrics without penalizing unmatched predicted or ground-truth parts.}
+    \label{tab:supp-ablation-without-penalty}
+    \renewcommand{\arraystretch}{1.2}
+
+    \begin{tabular*}{\linewidth}{@{\extracolsep{\fill}} l ccc ccc c @{}}
+        \toprule
+        \multirow{2}{*}{\textbf{Method}}
+        & \multicolumn{3}{c}{\textbf{Rest state}}
+        & \multicolumn{3}{c}{\textbf{Articulated state}}
+        & \multirow{2}{*}{\textbf{Inf. Time}} \\
+        \cmidrule(lr){2-4} \cmidrule(lr){5-7}
+        & gIoU$\uparrow$ & PC$\downarrow$ & mIoU$\uparrow$
+        & gIoU$\uparrow$ & PC$\downarrow$ & OC$\downarrow$
+        & \\
+        \midrule
+
+        \multicolumn{8}{l}{\underline{\textbf{Single branch}}} \\
+        \textbf{1-state}
+        & 0.470 & 0.028 & 0.536 & 0.457 & 0.087 & 0.008 & 7s \\
+
+        \textbf{2-state}
+        & 0.545 & 0.023 & 0.580 & 0.530 & 0.077 & 0.004 & 10s \\
+        
+        \textbf{4-state}
+        & {0.576} & {0.020} & {0.611} & {0.560} & {0.041} & {0.004} & {15s} \\
+
+        \textbf{8-state}     
+        & {0.577} & {0.019} & {0.627} & {0.598} & {0.039} & {0.004} & {18s} \\
+
+        \textbf{w/o attn. mask}
+        & 0.567 & 0.024 & 0.602 & 0.561 & 0.084 & 0.007 & 10s \\
+
+        \midrule
+        \multicolumn{8}{l}{\underline{\textbf{Siamese}}} \\
+
+        \textbf{w/o cycle loss}
+        & 0.583 & 0.020 & 0.619 & 0.567 & 0.074 & 0.005 & 10s \\
+
+        \textbf{final model}
+        & 0.578 & 0.027 & 0.617 & 0.560 & 0.075 & 0.004 & 10s \\
+
+        \bottomrule
+    \end{tabular*}
+\end{table}
+
+\begin{table}[!htbp]
+    \centering
+    \caption{\textbf{Additional ablation results with unmatched-part penalty.}
+    This table follows the main ablation protocol, where unmatched predicted or ground-truth parts are penalized in the part-wise metrics.
+    The values are copied from the main ablation table for easier side-by-side comparison with \cref{tab:supp-ablation-without-penalty}.}
+    \label{tab:supp-ablation-with-penalty}
+    \renewcommand{\arraystretch}{1.2}
+
+    \begin{tabular*}{\linewidth}{@{\extracolsep{\fill}} l ccc ccc c @{}}
+        \toprule
+        \multirow{2}{*}{\textbf{Method}}
+        & \multicolumn{3}{c}{\textbf{Rest state}}
+        & \multicolumn{3}{c}{\textbf{Articulated state}}
+        & \multirow{2}{*}{\textbf{Inf. Time}} \\
+        \cmidrule(lr){2-4} \cmidrule(lr){5-7}
+        & gIoU$\uparrow$ & PC$\downarrow$ & mIoU$\uparrow$
+        & gIoU$\uparrow$ & PC$\downarrow$ & OC$\downarrow$
+        & \\
+        \midrule
+
+        \multicolumn{8}{l}{\underline{\textbf{Single branch}}} \\
+        \textbf{1-state}
+        & {0.305} & {0.096} & {0.480} & {0.293} & {0.144} & {0.008} & {7s} \\
+
+        \textbf{2-state}
+        & {0.396} & {0.083} & {0.531} & {0.382} & {0.127} & {0.004} & {10s} \\
+
+        \textbf{4-state}
+        & {0.440} & {0.074} & {0.565} & {0.424} & {0.092} & {0.004} & {15s} \\
+
+        \textbf{8-state}     
+        & {0.456} & {0.073} & {0.574} & {0.447} & {0.088} & {0.004} & {18s} \\
+        \textbf{w/o attn. mask}
+        & {0.386} & {0.093} & {0.540} & {0.371} & {0.134} & {0.007} & {10s} \\ 
+
+        \midrule
+        \multicolumn{8}{l}{\underline{\textbf{Siamese}}} \\
+
+        \textbf{w/o cycle loss}
+        & {0.419} & {0.085} & {0.560} & {0.403} & {0.127} & {0.005} & {10s} \\
+
+        \textbf{final model}
+        & {0.462} & {0.074} & {0.578} & {0.445} & {0.112} & {0.004} & {10s} \\
+
+        \bottomrule
+    \end{tabular*}
+\end{table}

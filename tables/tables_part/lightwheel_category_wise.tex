@@ -1,0 +1,121 @@
+\begin{table}[ht]
+\centering
+\scriptsize
+\setlength{\tabcolsep}{2pt}
+\renewcommand{\arraystretch}{1.05}
+\newcommand{\tcell}[2]{\parbox[c]{#1}{\centering #2}}
+
+\resizebox{\linewidth}{!}{%
+\begin{tabular}{@{}llccccc>{\columncolor{green!15}}c cc>{\columncolor{green!15}}c cc>{\columncolor{green!15}}c>{\columncolor{green!15}}c>{\columncolor{green!15}}c}
+\toprule
+
+%
+\multicolumn{2}{c}{} &
+\multicolumn{14}{c}{\textbf{Categories}} \\
+\cmidrule(lr){3-16}
+%
+\textbf{Methods} & \textbf{Metrics}  &
+    %
+    %
+    %
+    %
+    %
+    %
+    %
+    %
+    %
+    %
+    %
+    %
+    %
+    %
+    \tcell{1cm}{ Micro-\\wave } &
+    \tcell{1cm}{ Dish-\\washer } &
+    \tcell{1cm}{ Sink } &
+    \tcell{1cm}{ Electric\\Kettle } &
+    \tcell{1cm}{ Refri-\\gerator } &
+    \tcell{1cm}{ Blender } &
+    \tcell{1cm}{ Oven } &
+    \tcell{1cm}{ Toaster } &
+    \tcell{1cm}{ Stand\\Mixer } &
+    \tcell{1cm}{ Toaster\\Oven } &
+    \tcell{1cm}{ Coffee\\Machine } &
+    \tcell{1cm}{ Stove } &
+    \tcell{1cm}{ Stovetop } &
+    \tcell{1cm}{ Range\\Hood } \\
+    
+    \midrule
+    P3SAM$^\dagger$ 
+& mIoU (rest) & 0.492       & 0.411       & 0.482       & \secondbest{0.637}       & \secondbest{0.498}       & \secondbest{0.514}       & 0.364       & 0.359       & \best{0.569}       & 0.395       & \secondbest{0.393}       & 0.253       & \best{0.377}       & 0.097       \\
+& gIoU (rest) & 0.252       & 0.156       & 0.162       & \best{0.515}       & 0.229       & \secondbest{0.282}       & 0.092       & 0.046       & \secondbest{0.365}       & \best{0.135}       & \best{0.119}       & -0.201      & \secondbest{-0.034}       & -0.223      \\
+& PC (rest)   & \best{0.103}       & 0.144       & 0.228       & \secondbest{0.110}       & 0.162       & 0.116       & \secondbest{0.170}       & \secondbest{0.187}       & \secondbest{0.146}       & \secondbest{0.152}       & \secondbest{0.156}       & 0.212       & 0.183       & \secondbest{0.233}       \\
+    
+    %
+    \midrule
+    PartField$^\dagger$
+    & mIoU (rest) & 0.408       & 0.273       & 0.406       & 0.320       & 0.235       & 0.330       & 0.202       & 0.192       & \secondbest{0.445}       & 0.187       & 0.205       & 0.170       & 0.222       & 0.056       \\
+    & gIoU (rest) & 0.254       & 0.087       & 0.309       & 0.218       & 0.068       & 0.141       & -0.029      & -0.026      & \best{0.367}       & -0.056      & \secondbest{0.048}       & -0.166      & \secondbest{-0.023}       & -0.204      \\
+    & PC (rest)   & 0.103       & \secondbest{0.104}       & 0.062       & \best{0.090}       & \best{0.070}       & \best{0.072}       & \best{0.129}       & \best{0.146}       & \best{0.063}       & \best{0.125}       & \best{0.083}       & 0.154       & \secondbest{0.134}       & \best{0.144}       \\
+    
+    \midrule
+    SINGAPO  
+& mIoU (rest)    & 0.337       & 0.346       & 0.423       & 0.304       & 0.168       & 0.050       & 0.220       & 0.248       & 0.071       & 0.193       & 0.301       & 0.225       & 0.176       & \secondbest{0.443}       \\
+& gIoU (rest)    & 0.003       & -0.080      & 0.135       & -0.286      & -0.126      & -0.328      & -0.162      & -0.172      & -0.335      & -0.180      & -0.144      & -0.190      & -0.234      & \secondbest{0.000}       \\
+& gIoU (high)    & 0.001       & -0.084      & 0.135       & -0.328      & -0.129      & -0.331      & -0.166      & -0.176      & -0.337      & -0.182      & -0.146      & -0.196      & -0.241      & \secondbest{-0.001}       \\
+& PC (rest)      & 0.138       & 0.196       & 0.197       & 0.313       & 0.126       & 0.236       & 0.187       & 0.208       & 0.326       & 0.192       & 0.273       & 0.163       & \best{0.109}       & 0.259       \\
+& PC (high)      & 0.362       & 0.401       & 0.220       & 0.593       & 0.176       & 0.318       & 0.299       & 0.281       & 0.573       & 0.293       & 0.342       & 0.205       & \best{0.134}       & 0.284       \\
+& OC (high)      & 0.016       & \secondbest{0.013}       & 0.002       & 0.059       & 0.007       & 0.026       & 0.008       & 0.007       & 0.040       & 0.009       & 0.013       & 0.004       & 0.001       & 0.003       \\
+        
+    
+    \midrule
+    SINGAPO$^\dagger$ 
+& mIoU (rest)    & 0.392       & 0.331       & 0.056       & 0.490       & 0.209       & 0.102       & 0.251       & 0.283       & 0.067       & 0.229       & 0.376       & 0.279       & 0.254       & \best{0.515}       \\
+& gIoU (rest)    & 0.080       & -0.075      & -0.262      & 0.072       & -0.040      & -0.271      & -0.139      & -0.114      & -0.349      & -0.160      & -0.057      & -0.132      & -0.114      & \best{0.089}       \\
+& gIoU (high)    & 0.079       & -0.077      & -0.262      & 0.008       & -0.047      & -0.271      & -0.145      & -0.117      & -0.349      & -0.164      & -0.057      & -0.136      & -0.117      & \best{0.089}       \\
+& PC (rest)      & 0.171       & 0.225       & 0.278       & 0.288       & 0.124       & 0.261       & 0.240       & 0.241       & 0.355       & 0.247       & 0.289       & 0.225       & 0.185       & 0.265       \\
+& PC (high)      & 0.435       & 0.425       & 0.282       & 0.338       & 0.182       & 0.341       & 0.366       & 0.326       & 0.625       & 0.364       & 0.329       & 0.279       & 0.202       & 0.283       \\
+& OC (high)      & 0.019       & 0.013       & 0.059       & 0.054       & 0.007       & 0.025       & 0.009       & 0.007       & \secondbest{0.040}       & 0.011       & 0.013       & 0.005       & 0.001       & 0.002       \\
+    
+    \midrule
+    \multirow{2}{*}{\parbox[t]{1.5cm}{Articulate \\ AnyMesh~\cite{qiu2025articulate}$^\dagger$}} 
+& mIoU (rest)    & 0.671       & 0.583       & \secondbest{0.493}       & 0.408       & 0.362       & 0.503       & 0.432       & \secondbest{0.441}       & 0.425       & 0.387       & 0.340       & 0.369       & 0.289       & 0.236       \\
+& gIoU (rest)    & 0.434       & 0.283       & \secondbest{0.402}       & 0.092       & 0.081       & 0.275       & 0.122       & \secondbest{0.130}       & 0.210       & 0.063       & 0.000       & -0.033      & -0.129      & -0.104      \\
+& gIoU (high)    & 0.405       & 0.265       & \secondbest{0.394}       & 0.053       & 0.077       & \secondbest{0.247}       & 0.107       & \secondbest{0.120}       & \best{0.178}       & 0.057       & \secondbest{-0.005}       & -0.040      & -0.129      & -0.104      \\
+& PC (rest)      & 0.147       & 0.218       & \secondbest{0.057}       & 0.218       & 0.157       & 0.133       & 0.235       & 0.222       & 0.155       & 0.236       & 0.210       & 0.281       & 0.273       & 0.280       \\
+& PC (high)      & 0.216       & 0.235       & \best{0.068}       & 0.472       & 0.215       & 0.182       & 0.279       & 0.258       & \best{0.451}       & 0.297       & \best{0.227}       & 0.292       & 0.289       & \secondbest{0.279}       \\
+& OC (high)      & 0.011       & \best{0.003}       & \best{0.001}       & 0.064       & 0.011       & \secondbest{0.021}       & 0.011       & 0.009       & 0.040       & 0.016       & 0.014       & \secondbest{0.002}       & \best{0.000}       & \best{0.000}       \\
+    
+    \midrule
+    \multirow{2}{*}{\parbox[t]{1.5cm}{\method \\ (ours)}} 
+& mIoU (rest)    & \secondbest{0.678}       & \secondbest{0.715}       & 0.369       & 0.503       & 0.488       & 0.404       & \secondbest{0.491}       & 0.393       & 0.267       & \secondbest{0.444}       & 0.256       & \secondbest{0.392}       & 0.222       & 0.208       \\
+& gIoU (rest)    & \secondbest{0.472}       & \secondbest{0.593}       & 0.259       & 0.218       & \secondbest{0.287}       & 0.196       & \secondbest{0.199}       & 0.109       & -0.068      & 0.102       & -0.144      & \secondbest{0.196}       & -0.041      & -0.189      \\
+& gIoU (high)    & \secondbest{0.439}       & \secondbest{0.554}       & 0.257       & \secondbest{0.167}       & \secondbest{0.265}       & 0.173       & \best{0.180}       & 0.098       & \secondbest{-0.083}       & \secondbest{0.086}       & -0.147      & \secondbest{0.186}       & \secondbest{-0.042}       & -0.191      \\
+& PC (rest)      & 0.130       & \best{0.088}       & 0.092       & 0.208       & 0.120       & \secondbest{0.111}       & 0.212       & 0.188       & 0.251       & 0.242       & 0.224       & \best{0.106}       & 0.166       & 0.328       \\
+& PC (high)      & \secondbest{0.123}       & \best{0.172}       & \secondbest{0.140}       & \best{0.274}       & \secondbest{0.123}       & \best{0.165}       & \best{0.219}       & \best{0.197}       & 0.509       & \best{0.244}       & \secondbest{0.267}       & \best{0.110}       & \secondbest{0.179}       & 0.338       \\
+& OC (high)      & \secondbest{0.001}       & 0.024       & \secondbest{0.002}       & \best{0.018}       & \best{0.001}       & \best{0.019}       & \best{0.005}       & \best{0.001}       & 0.043       & \best{0.002}       & \best{0.012}       & 0.002       & 0.003       & \secondbest{0.002}       \\
+    
+    \midrule
+    
+    \multirow{2}{*}{\parbox[t]{1.5cm}{\method \\ (ours)$^\dagger$}} 
+& mIoU (rest)    & \best{0.802}       & \best{0.811}       & \best{0.508}       & \best{0.674}       & \best{0.633}       & \best{0.708}       & \best{0.521}       & \best{0.509}       & 0.284       & \best{0.490}       & \best{0.435}       & \best{0.543}       & \secondbest{0.373}       & 0.303       \\
+& gIoU (rest)    & \best{0.632}       & \best{0.689}       & \best{0.425}       & \secondbest{0.390}       & \best{0.498}       & \best{0.501}       & \best{0.203}       & \best{0.199}       & -0.071      & \secondbest{0.134}       & 0.038       & \best{0.292}       & \best{-0.007}       & -0.088      \\
+& gIoU (high)    & \best{0.580}       & \best{0.640}       & \best{0.423}       & \best{0.330}       & \best{0.452}       & \best{0.456}       & \secondbest{0.179}       & \best{0.181}       & -0.083      & \best{0.110}       & \best{0.033}       & \best{0.274}       & \best{-0.012}       & -0.088      \\
+& PC (rest)      & \secondbest{0.115}       & \secondbest{0.088}       & \best{0.047}       & 0.207       & \secondbest{0.072}       & 0.121       & 0.234       & 0.214       & 0.281       & 0.252       & 0.278       & \secondbest{0.141}       & 0.195       & 0.273       \\
+& PC (high)      & \best{0.116}       & \secondbest{0.177}       & 0.158       & \secondbest{0.276}       & \best{0.075}       & \secondbest{0.171}       & \secondbest{0.242}       & \secondbest{0.220}       & \secondbest{0.482}       & \secondbest{0.254}       & 0.321       & \secondbest{0.147}       & 0.203       & \best{0.276}       \\
+& OC (high)      & \best{0.000}       & 0.027       & 0.003       & \secondbest{0.018}       & \secondbest{0.001}       & \secondbest{0.019}       & \secondbest{0.005}       & \secondbest{0.001}       & \best{0.038}       & \secondbest{0.002}       & \secondbest{0.012}       & \best{0.001}       & \secondbest{0.001}       & 0.002       \\
+
+\bottomrule
+\end{tabular}
+}
+\caption{
+\textbf{Per-category evaluation results} against baselines on the Lightwheel dataset.
+We report the results both at the rest state (\textbf{rest}) and at the fully articulated state (\textbf{high}).
+The categories are ranked based on gIoU (rest) averaged over all methods (left is higher).
+$^\dagger$: leveraging mesh connectivity.
+Categories highlighted in \colorbox{green!15}{green} indicate out-of-distribution categories absent from the training datasets PartNet-Mobility and GRScenes.
+Colors: \best{best} and \secondbest{second best}.
+}%
+
+\label{tab:quant-13cats-sidecol}
+\end{table}
+    

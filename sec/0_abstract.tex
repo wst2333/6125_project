@@ -1,0 +1,24 @@
+\begin{abstract}
+
+We present \method,
+a feed-forward model that directly predicts all articulations of an object,
+including part segmentation, kinematic structure, motion type, and continuous joint parameters,
+from two distinct states of the same object.
+Unlike existing \emph{single}-state feed-forward methods,
+\method exploits the observed state change as direct evidence of articulation,
+by learning to match the corresponding motion across the \emph{two} states,
+rather than relying heavily on category-level priors learned from limited articulated-object annotations.
+\method is a Siamese motion-based articulation transformer,
+along with a cycle-consistency training objective that encourages consistent predictions under reversed state order.
+We demonstrate the importance of the two-state formulation and cycle-consistency training for learning feed-forward articulations through extensive experiments.
+We also show that \method achieves state-of-the-art performance on articulated structure recovery, with better generalization to novel object categories and more complex kinematic layouts.
+% Additionally, we show that, with the help of VLMs, even a single state input can be extended to multiple states as conditioning for our model, further improving its performance and generalization.
+
+% Recovering articulated 3D objects requires understanding not only their geometry, but also how their parts move and constrain one another.
+% Existing feed-forward methods usually infer this structure from a single static observation, forcing the model to rely heavily on category-level priors learned from limited articulated-object annotations.
+% We instead study articulation inference from two distinct states of the same object, where the observed state change directly exposes the moving parts and their underlying kinematics.
+% We introduce \method, a feed-forward framework that takes two unorganized point clouds as input and predicts part segmentation, kinematic structure, motion type, and continuous joint parameters.
+% \method uses a Siamese motion-based articulation transformer with shared part queries, query-to-point masked attention, point-to-query attention, and a cycle-consistency objective that encourages consistent predictions under reversed state order.
+% This design allows the model to exploit cross-state geometric evidence without requiring point correspondences between the two observations, while retaining fast single-pass inference at test time.
+% Experiments on articulated object benchmarks show that the two-state formulation substantially improves over single-state prediction and achieves state-of-the-art performance on articulated structure recovery, with ablations validating the contribution of cross-state reasoning and consistency training.
+\end{abstract}

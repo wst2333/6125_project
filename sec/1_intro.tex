@@ -1,0 +1,100 @@
+\section{Introduction}%
+\label{sec:intro}
+
+How do we perceive the articulated structure of an object?
+Consider a child playing with an Optimus Prime robot~\footnote{Modern Transformer toys can contain more than 30 servomotors, with more than 100 moving parts.}.
+Even without knowing its mechanism in advance, the child can quickly infer which parts move together, which joints rotate, and how one configuration transforms into another.
+This ability does \emph{not} come from treating objects as static collections of isolated elements, but from observing the object across different states and reasoning about the \emph{motion} between them.
+
+In this paper, we thus consider the problem of inferring the articulated structure of an object from \emph{two distinct states} of the same object,
+rather than guessing it from a \emph{single static} observation.
+Solving this task is particularly important for enabling AI systems to understand and interact with functional objects in our daily lives, such as drawers, laptops, and glasses, with broad applications in robotics~\cite{xiang2020sapien,li2024behavior}, virtual reality~\cite{chen2025freeart3d}, and embodied AI~\cite{Puig2023habitat,liigibson}.
+
+Recently, several learning-based methods have been proposed to learn a feed-forward model that can directly infer part geometry and kinematics from visual inputs, such as a single image~\cite{chen2024urdformer,chen2025ArtiLatent} or a single 3D asset~\cite{che2024op,Goyal_2025_ICCV,li2025particulate}.
+However, these methods still generalize poorly to unseen categories,
+partly because they operate in a \emph{single-state} regime that learns the \emph{category-specific} kinematic priors from annotated training data.
+However, current datasets with dense articulated annotations are extremely limited in scale and diversity~\footnote{Particulate~\cite{li2025particulate} combines PartNet-Mobility~\cite{Mo_2019_CVPR} and GRScenes~\cite{wang2024grutopia},
+but still yields only 3,800 objects across 50 categories, most of which are furniture.}.
+In stark contrast, the \emph{two-state} observation of the same object directly reveals the underlying motion and its articulation,
+which is far easier to obtain at scale than dense kinematic annotations:
+they can be collected from internet videos,
+recorded through simple manual interactions~\cite{huang2026react3d},
+or synthesized by modern multimodal foundation models,
+like Seedance 2.0~\cite{seedance2026seedance}, Nano Banana Pro~\cite{gemini_image_pro}, and ChatGPT image 2.0~\cite{chatgpt_images_2_0}.
+
+Drawing inspiration from this observation, we introduce \method, a novel paradigm that infers an object's articulation from two \emph{motion} states in a feed-forward manner.
+With this \emph{two-state} learning paradigm, the task is formulated as learning to perform \emph{corresponding motion part matching} between the two states to identify the articulated parts with underlying motion and infer the kinematic structure, unlike the previous data-driven \emph{one-state} learning paradigm~\cite{che2024op,Goyal_2025_ICCV,li2025particulate} that learns the kinematic priors from annotated training data.
+Such a formulation is more intuitive and reduces the task's learning difficulty,
+enabling our model to achieve state-of-the-art performance and strong cross-dataset generalization ability on unseen categories.
+
+In principle, several recent optimization-based methods~\cite{liu2023paris,chen2025freeart3d,ai2026aim} also exploit multi-state geometry to infer articulation (details shown in~\Cref{tab:related_articulation}), but they typically require test-time optimization and are therefore expensive and difficult to deploy.
+In contrast, \method infers the full articulations in a single forward pass, in seconds, including part segmentation, kinematic hierarchy, motion type, and motion range.
+Architecturally, it is a Siamese query-based transformer that takes two states as input and performs bidirectional information exchange between the two branches to capture the motion transformation.
+To further align the model with physical laws, we introduce a cycle-consistency loss that enforces the model to produce consistent predictions when the order of the two states is swapped.
+
+To summarize, we make the following contributions:
+(1) We introduce \method, a novel feed-forward paradigm that learns to infer the full articulated structure of an object from \emph{two-state} observations.
+(2) We demonstrate that the two-state design allows the model to easily predict articulated structure with state-of-the-art performance on both in-domain and out-of-domain benchmarks, and we strengthen this effect with a Siamese cycle-consistency training framework and objective.
+(3) We also show that the additional state can be obtained cheaply in practice, like casual users' recorded media or current powerful multimodal foundation models generated images, making \method usable in real-world applications.
+
+% \hrule
+
+% \ruijie{
+% In practice, we assume two input states of the same object, as our experiments show that this simple modification substantially improves cross-scene generalization while avoiding the need for complex multi-view inputs. More importantly, we found that the second state can be readily obtained by existing powerful multimodal foundation models ChatGPT image 2.0, making our approach both scalable and practical.
+
+
+% Furthermore, unlike~\cite{li2025particulate} that predicts articulation from a single state, our method learns articulation in a way that aligns with physical laws, as it captures the underlying motion between two states rather than the instance category. 
+% To verify this claim, we consider a dual problem: if we swap the order of the observed states, will the model still produce correct and consistent articulation predictions? Further experiments confirm this phenomenon. \todo{confirm this via cycle exp.} To further enhance this consistency, we design a Siamese framework that uses the reverse order of observed states to construct a cycle-consistency loss. Thanks to this training paradigm, our final model generates accurate, consistent articulated objects from arbitrary state changes, achieving a new state-of-the-art on both in-domain and out-of-domain benchmarks.
+
+% To summarize, our key contributions are: (1) We introduce \method, a feed-forward method that utilizes two-state observations instead of one to generate articulated objects. Plus, we verify that the additional observation can be easily obtained by current VLMs. (2) We prove that the two-state design makes the model learn physical laws from articulated motion. A Siamese framework with a cycle-consistency constraint is also introduced to further confirm this. (3) Extensive experiments demonstrate that \method outperforms the state-of-the-art methods on both PartNet-Mobility and Lightwheel datasets. 
+% }
+
+% To effectively capture the geometric transformation between the two states, we build a dual-branch transformer backbone with a novel \emph{bidirectional Global Flow} mechanism.
+% Specifically, the dual-branch transformer processes the two states in parallel,
+% while the bidirectional Global Flow explicitly enforces information exchange between the two branches via cross-attention on part-centric queries from both states.
+% With our dual-branch architecture and bidirectional Global Flow, the problem is formulated as to perform \emph{corresponding matching} between the two states to identify the moving parts and infer the kinematic structure, unlike the data-driven learning paradigm that relies on learning the kinematic priors from annotated training data~\cite{che2024op,Goyal_2025_ICCV,li2025particulate}.
+% Such a formulation is more intuitive and reduces the task's learning difficulty,
+% enabling our model to achieve state-of-the-art performance and strong generalization ability on unseen categories and real-world settings.
+
+% Additionally, we also employ multiple decoders as previous works~\cite{Goyal_2025_ICCV,li2025particulate} that predict all the necessary parameters for a simulation-ready digital replica of the articulated object,
+% including \emph{articulated} 3D part segmentation, kinematic hierarchy, motion type, and precise motion ranges.
+% However, our model adopts a dual-branch architecture that processes the two states in parallel,
+% and the decoders are designed to leverage the features from both branches to predict the parameters,
+% rather than relying on a single branch that processes one state as previous works~\cite{Goyal_2025_ICCV,li2025particulate}.
+% Although our inputs correspond to different states,
+% they are derived from the identical object, and therefore should be consistent  the predicted parameters,
+% such as part segmentation, kinematic hierarchy, and motion type (while the motion ranges are expected to be inversed).
+% We thus introduce additional losses to explicitly enforce the consistency between the two branches,
+% which further improves the performance and generalisation ability of our model.
+% \todo{needs to refine depends on the final design.}
+% Note that,
+% since the state information flows bidirectionally through the attention, 
+% our model does \emph{not} rely on any explicit correspondent points between the two states.
+
+% On the in-domain PartNet-Mobility dataset~\cite{Mo_2019_CVPR}, our model achieves state-of-the-art performance on all the metrics, outperforming the previous best method by a large margin.
+% More importantly, our model also demonstrates strong generalization ability on out-of-domain datasets, such as the real-world dataset LightWheel~\cite{li2025particulate}, without any fine-tuning, which is a significant improvement over previous methods that fail to generalize to unseen categories and real-world settings. \todo{refine based on the final results}
+% Furthermore,
+% extensive ablation studies and analysis underscore the significance of our two distinct states formulation,
+% along with the dual-branch architecture and bidirectional Global Flow mechanism, in effectively capturing the geometric transformation and inferring the articulated structure of objects. 
+
+
+% Articulated objects, ranging from common household items like drawers and laptops to complex industrial machinery, are ubiquitous in our daily environments and central to human-scene interactions. Consequently, the perception and understanding of these objects are critical across domains such as virtual and augmented reality (VR/AR), industrial design, and computer animation. More importantly, constructing accurate digital replicas of articulated objects is a foundational requirement for robotics and embodied AI, enabling agents to simulate and interact with the physical world effectively.
+
+% Although recent advancements in 3D generation and reconstruction have significantly automated the creation of static assets, modelling articulated objects remains a formidable challenge. Unlike static geometries, articulated objects consist of interconnected parts that exhibit constrained motion. Recovering their digital replicas requires not only high-fidelity geometric reconstruction but also the precise inference of the underlying kinematic structure and functional mechanisms.
+
+% In this paper, we observe the essence of articulation: the relative motion between parts can be effectively captured by observing just two distinct configurations. We introduce a novel framework that infers articulated structure from two states by leveraging the geometric transformation between a canonical state and an articulated state.
+
+% To achieve this, we propose \emph{TWIST}, an end-to-end neural architecture that jointly processes two point-cloud states to extract a comprehensive kinematic graph. At the core of our method is a dual-branch transformer backbone equipped with a novel bidirectional Global Flow mechanism. By explicitly enforcing cross-attention between object-centric queries from the two states (q0 and q1), our network inherently learns the temporal and spatial correspondences necessary to identify moving parts without relying on explicit point-level tracking.
+
+% Furthermore, decomposing an object into functional parts is often ambiguous. To address this, our architecture incorporates a Multi-Hypothesis Mask Decoder, allowing the network to propose multiple valid part segmentation configurations and select the most geometrically consistent one.
+
+% Beyond mere segmentation, our framework fully parameterises the articulation. By pooling features based on the predicted part assignments, our motion and hierarchy decoders predict the pairwise adjacency matrix (the kinematic structure) and classify the motion type (e.g., revolute, prismatic). For precise physical simulation, we regress exact motion parameters, utilising Plücker coordinates to robustly represent 3D motion axes and predicting the continuous ranges of motion for each joint.
+
+% In summary, our main contributions are as follows: 
+
+% \textbf{A Dual-State Formulation:} We introduce a novel approach to articulated object understanding that bypasses the need for dense video sequences, successfully inferring complex kinematics from just two distinct structural states.
+
+% \textbf{Bidirectional Global Flow Architecture:} We propose a dual-branch transformer equipped with inter-branch cross-attention, enabling effective feature exchange and implicit motion tracking between states.
+
+% \textbf{Comprehensive Kinematic Parameterisation :} Our end-to-end framework jointly predicts multi-hypothesis part segmentations, kinematic hierarchies, motion types, and precise joint parameters (axes and ranges), generating a complete, simulation-ready digital replica.
+% \label{sec:intro}

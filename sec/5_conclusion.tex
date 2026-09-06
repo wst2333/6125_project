@@ -1,0 +1,21 @@
+\section{Conclusion}%
+\label{sec:conclusions}
+
+We presented \method, a feed-forward framework for inferring articulated 3D structure from \emph{two} observed states of the same object.
+% The key to our success is that we learn articulation from two states' motion evidence.
+It departs from the common feed-forward methods,
+which typically learns articulation from a \emph{single} state and relies heavily on category-level priors to infer part motion.
+It achieves state-of-the-art performance on both rest-state part segmentation and articulated-state reconstruction, with a single forward pass and no post-processing.
+The ablations further validate the importance of motion evidence, siamese paired learning, and cycle-consistency training.
+Beyond metrics, we also demonstrate a direct application in which the predicted articulated object is exported as a URDF asset and interacts with a robot arm in the RoboTwin simulator.
+
+% The central idea is that articulation is most directly revealed by state change: two independently sampled point clouds reveal which parts move together and how their motion is constrained, reducing reliance on category-level priors learned from limited annotations.
+% To exploit this cue, \method uses shared part queries, cross-state transformer reasoning, mask-guided point-query refinement, and a Siamese cycle-consistency objective to predict part segmentation and articulation parameters in a single-pass pipeline.
+% All the proposed designs are further proven valid in the experiments.
+% % Experiments show that the two-state formulation improves both rest-state part recovery and articulated-state reconstruction, while ablations validate the role of cross-state input, attention masking, and cycle-consistency training.
+% Beyond metrics, we also demonstrate a direct application in which the predicted articulated object is exported as a URDF asset and interacts with a robot arm in the RoboTwin simulator.
+% This result suggests that multi-state geometry can serve as a practical bridge between visual or generated object observations and simulation-ready articulated assets for downstream embodied interaction.
+
+% Several limitations remain.
+
+% Future work can extend this formulation to noisy image-derived reconstructions, richer joint constraints, multi-step state sequences, and closed-loop robot interaction, where the agent actively chooses actions that reveal the most informative articulation evidence.

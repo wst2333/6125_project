@@ -1,0 +1,38 @@
+
+\begin{table}[t]
+\centering
+\small
+\caption{
+\textbf{Evaluation on the fully articulated states}, where every part is moved to its maximum extent.
+We report part-wise gIoU and PC as in \Cref{tab:rest-comparison}, and whole-object Chamfer distance (OC), which measures the overall bidirectional Chamfer distance between the \emph{whole} predicted geometry and its GT counterpart.
+Notations --, 1@10: same as \Cref{tab:rest-comparison}.
+Colors: \best{best} and \secondbest{second best}.
+}
+\vspace{-1em}
+\label{tab:full-comparison}
+\setlength{\tabcolsep}{3pt}
+\renewcommand{\arraystretch}{1.05}
+% \resizebox{\linewidth}{!}{%
+\begin{tabular}{@{}lcccccc@{}}
+\toprule
+ & \multicolumn{3}{c}{\textbf{Lightwheel}} & \multicolumn{3}{c}{\textbf{PartNet-Mobility}} \\
+\cmidrule(lr){2-4}\cmidrule(lr){5-7}
+%
+\textbf{Method} & gIoU$\uparrow$ & PC$\downarrow$ & OC$\downarrow$
+& gIoU$\uparrow$ & PC$\downarrow$ & OC$\downarrow$ \\
+
+% \midrule
+% Naive Baseline & 0.016 & 0.293 & 0.017 & 0.296 & 0.216 & 0.027 \\
+% SINGAPO~\cite{liusingapo}     & -0.121 & 0.299 & 0.011 & -- & -- & -- \\
+% SINGAPO~\cite{liusingapo} (1@10)  & -0.100 & 0.238 & 0.012 & -- & -- & -- \\
+
+\midrule
+SINGAPO~\cite{liusingapo}    & -0.102 & 0.329 & 0.018 &  0.255 & 0.184 & 0.046 \\
+SINGAPO~\cite{liusingapo} (1@10)    & -0.056 & 0.261 & 0.019 &  0.264 & 0.168 & 0.041 \\
+Articulate AnyMesh~\cite{qiu2025articulate}   & 0.158 & 0.237 & 0.010 & 0.378 & 0.251 & 0.022 \\
+Particulate~\cite{li2025particulate}    & \best{0.305} & \best{0.208} & \secondbest{0.009} & \secondbest{0.843} & \secondbest{0.022} & \secondbest{0.003} \\
+ours (single query)           & {0.474} & {0.194} & \best{0.003} & \best{0.888} & \best{0.007} & \best{0.001}\\
+\bottomrule
+\end{tabular}%
+% }
+\end{table}

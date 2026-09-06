@@ -1,0 +1,52 @@
+\begin{table}[tb!]
+    \centering
+    \caption{\textbf{Ablation study on model design choices.}
+    % We evaluate the contribution of different input-state configurations and training objectives. 
+    % In the single-branch setting, we compare models using different numbers of observed states and further ablate the attention mask. 
+    % In the Siamese setting, we study the effect of the cycle-consistency loss and compare it with the final model. 
+    The ablation is done using a subset of training and evaluation data.
+    We report reconstruction quality on both the rest and articulated states, together with inference time. 
+    Best results are highlighted in \textbf{bold}.}
+    \label{tab:ablation}
+    \renewcommand{\arraystretch}{1.0}
+
+    \begin{tabular}{@{} l ccc ccc c @{}}
+        \toprule
+        \multirow{2}{*}{\textbf{Method}} 
+        & \multicolumn{3}{c}{\textbf{Rest state}} 
+        & \multicolumn{3}{c}{\textbf{Articulated state}} 
+        & \multirow{2}{*}{\textbf{Time}} \\
+        \cmidrule(lr){2-4} \cmidrule(lr){5-7}
+        & gIoU$\uparrow$ & PC$\downarrow$ & mIoU$\uparrow$ 
+        & gIoU$\uparrow$ & PC$\downarrow$ & OC$\downarrow$ 
+        & \\
+        \midrule
+
+        \multicolumn{8}{l}{\underline{\textbf{Single branch}}} \\
+        \textbf{1-state}     
+        & {0.305} & {0.096} & {0.480} & {0.293} & {0.144} & {0.008} & {7s} \\
+        
+        \textbf{2-state (default)}    
+        & {0.396} & {0.083} & {0.531} & {0.382} & {0.127} & \textbf{0.004} & {10s} \\
+        
+        \textbf{4-state}     
+        & {0.440} & {0.074} & {0.565} & {0.424} & {0.092} & \textbf{0.004} & {15s} \\
+        
+        \textbf{8-state}     
+        & {0.456} & \textbf{0.073} & {0.574} & \textbf{0.447} & \textbf{0.088} & \textbf{0.004} & {18s} \\
+        
+        \textbf{w/o attn. mask}  
+        & {0.386} & {0.093} & {0.540} & {0.371} & {0.134} & {0.007} & {10s} \\ 
+
+        \midrule 
+        \multicolumn{8}{l}{\underline{\textbf{Siamese}}} \\
+        
+        \textbf{w/o cycle loss} 
+        & {0.419} & {0.085} & {0.560} & {0.403} & {0.127} & {0.005} & {10s} \\
+
+        \textbf{final model} 
+        & \textbf{0.462} & {0.074} & \textbf{0.578} & {0.445} & {0.112} & \textbf{0.004} & {10s} \\        
+        
+        \bottomrule
+    \end{tabular}
+\end{table}

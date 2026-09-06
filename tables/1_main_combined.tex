@@ -1,0 +1,75 @@
+\begin{table}[t]
+\centering
+\small
+\caption{
+\textbf{Evaluation on rest and fully articulated states.}
+For each dataset we report rest-pose segmentation (gIoU, part-wise Chamfer distance PC, and mIoU) and articulated geometry (gIoU, PC, and whole-object Chamfer distance OC).
+All metrics are computed with penalties applied to unmatched parts.
+--: method is not applicable for the articulated state.
+1@10: best sample out of 10 predictions per instance.
+Colors: \best{best} and \secondbest{second best}.
+}%
+\label{tab:combined-comparison}
+\setlength{\tabcolsep}{3pt}
+\renewcommand{\arraystretch}{1.1}
+\resizebox{\linewidth}{!}{%
+\begin{tabular}{@{}lcccccc ccccccc@{}}
+\toprule
+& \multicolumn{6}{c}{\textbf{Lightwheel}}
+& \multicolumn{6}{c}{\textbf{PartNet-Mobility}} \\
+\cmidrule(lr){2-7}\cmidrule(lr){8-13}
+\textbf{Method} & \multicolumn{3}{c}{\textbf{Rest-Pose Seg.}}
+& \multicolumn{3}{c}{\textbf{Articulated States}}
+& \multicolumn{3}{c}{\textbf{Rest-Pose Seg.}}
+& \multicolumn{3}{c}{\textbf{Articulated States}} \\
+\cmidrule(lr){2-4}\cmidrule(lr){5-7}\cmidrule(lr){8-10}\cmidrule(lr){11-13}
+& gIoU$\uparrow$ & PC$\downarrow$ & mIoU$\uparrow$
+& gIoU$\uparrow$ & PC$\downarrow$ & OC$\downarrow$
+& gIoU$\uparrow$ & PC$\downarrow$ & mIoU$\uparrow$
+& gIoU$\uparrow$ & PC$\downarrow$ & OC$\downarrow$ \\
+\midrule
+% PartField~\cite{liu2025partfield}
+%   & 0.079 & \best{0.106} & 0.264
+%   & -- & -- & --
+%   & 0.183 & 0.123 & 0.361
+%   & -- & -- & -- \\
+P3SAM~\cite{ma2025p3sam}
+  & 0.122 & 0.177 & 0.411
+  & -- & -- & --
+  & -0.116 & 0.261 & 0.267
+  & -- & -- & -- \\
+\midrule
+SINGAPO~\cite{liusingapo}
+  & -0.097 & 0.234 & 0.273
+  & -0.102 & 0.329 & 0.018
+  & 0.262 & 0.124 & 0.468
+  & 0.255 & 0.184 & 0.046 \\
+SINGAPO~\cite{liusingapo} (1@10)
+  & -0.050 & 0.221 & 0.297
+  & -0.056 & 0.261 & 0.019
+  & 0.271 & 0.117 & 0.471
+  & 0.264 & 0.168 & 0.041 \\
+Articulate AnyMesh~\cite{qiu2025articulate}
+  & 0.172 & 0.190 & 0.452
+  & 0.158 & 0.237 & 0.010
+  & 0.383 & 0.104 & 0.542
+  & 0.378 & 0.251 & 0.022 \\
+Particulate~\cite{li2025particulate}
+  & 0.332 & \secondbest{0.168} & 0.576
+  & 0.305 & 0.208 & 0.009
+  & {0.880} & \secondbest{0.003} & {0.884}
+  & {0.843} &{0.022} & \secondbest{0.003} \\
+\textbf{\method (Single)}
+  & \secondbest{0.489} & \best{0.156} & \secondbest{0.578}
+  & \secondbest{0.474} & \secondbest{0.194} & \best{0.003}
+  & \secondbest{0.924} & \best{0.002} & \secondbest{0.936}
+  & \secondbest{0.888} &\secondbest{0.007} & \best{0.001} \\
+\textbf{\method (Siamese)}
+  & \best{0.544} & \best{0.156} & \best{0.647}
+  & \best{0.512} & \best{0.188} & \secondbest{0.005}
+  & \best{0.931} & \secondbest{0.003} & \best{0.939}
+  & \best{0.890} & \best{0.005} & \best{0.001} \\
+\bottomrule
+\end{tabular}%
+}
+\end{table}

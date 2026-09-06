@@ -1,0 +1,73 @@
+\begin{table}[ht]
+\centering
+\small
+\setlength{\tabcolsep}{2.5pt} % 稍微收缩列间距，防止表格过宽
+\renewcommand{\arraystretch}{1.2} % 增加行高，让表格更有呼吸感
+\resizebox{\linewidth}{!}{%
+\begin{tabular}{@{}l ccccc | cccccc c | c @{}}
+\toprule
+& \multicolumn{5}{c|}{\textbf{Input Modality}} & \multicolumn{7}{c|}{\textbf{Output Properties}} & \textbf{Inf.} \\
+\cmidrule(lr){2-6} \cmidrule(lr){7-13}
+\textbf{Method} & \faAlignLeft & \faCamera & \faProjectDiagram & \textbf{3D} & \faLayerGroup & \faBoxOpen & \textbf{3D} & \faShapes & \faProjectDiagram & \faLongArrowAltRight & \faArrowsAltV & $\mathbf{1}^{+}$ & \textbf{Time} \\
+\midrule
+
+% --- 第一类：基于优化的方法 ---
+\rowcolor{tableblue} \multicolumn{14}{l}{\textit{Optimization-based Methods}} \\
+PARIS \cite{liu2023paris} & -- & \checkmark & -- & -- & 2 & -- & \checkmark & \checkmark & \checkmark & \checkmark & \checkmark & -- & N/A \\
+AIM \cite{ai2026aim}& -- & \checkmark & -- & \checkmark & 2 & -- & \checkmark & \checkmark & \checkmark & \checkmark & \checkmark & \checkmark & N/A \\
+
+\midrule
+% --- 第二类：基于学习的方法 ---
+\rowcolor{tableblue} \multicolumn{14}{l}{\textit{Learning-based Methods}} \\
+GEOPARD \cite{Goyal_2025_ICCV} & -- & -- & -- & \checkmark$^\dagger$ & 1 & -- & \checkmark & -- & \checkmark & \checkmark & -- & \checkmark & N/A \\
+MeshArt \cite{gao2025meshart} & -- & (\checkmark)$^o$ & -- & (\checkmark)$^o$ & 0 & \checkmark & \checkmark & \checkmark & -- & \checkmark & \checkmark & \checkmark & N/A \\
+PARTICULATE \cite{li2025particulate} & -- & -- & -- & \checkmark & 1 & -- & \checkmark & \checkmark & \checkmark & \checkmark & \checkmark & \checkmark & \textasciitilde10s \\
+URDF-Anything \cite{li2025urdfanything} & \checkmark & \checkmark & -- & \checkmark & 1 & -- & \checkmark & \checkmark & \checkmark & \checkmark & \checkmark & \checkmark & N/A \\
+
+\midrule
+% --- 第三类：基于检索的方法 ---
+\rowcolor{tableblue} \multicolumn{14}{l}{\textit{Generation-based Methods}} \\
+SINGAPO \cite{liusingapo} & -- & \checkmark & -- & -- & 1 & \checkmark & (\checkmark)$^\ast$ & \checkmark & \checkmark & \checkmark & \checkmark & \checkmark & \textasciitilde10s \\
+CAGE \cite{liu2024cage} & \checkmark & -- & \checkmark & -- & 1 & \checkmark & (\checkmark)$^\ast$ & \checkmark & \checkmark & \checkmark & -- & \checkmark & N/A \\
+Kinematify \cite{wang2025kinematify} & (\checkmark)$^o$ & (\checkmark)$^o$ & -- & -- & (1)$^o$ & -- & \checkmark & \checkmark & \checkmark & \checkmark & -- & \checkmark & \textasciitilde20m \\
+Articulate-Anything \cite{le2024articulate} & \checkmark & (\checkmark)$^o$ & -- & -- & (1$^{+}$)$^o$ & -- & (\checkmark)$^\ast$ & \checkmark & \checkmark & \checkmark & \checkmark & -- & \textasciitilde10m \\
+FreeArt3D \cite{chen2025freeart3d} & -- & \checkmark & \checkmark & -- & 6 & -- & \checkmark & \checkmark & \checkmark & \checkmark & -- & -- & \textasciitilde10m \\
+Articulate AnyMesh \cite{qiu2025articulate} & -- & -- & -- & \checkmark & 1 & -- & \checkmark & \checkmark & \checkmark & \checkmark & \checkmark & \checkmark & N/A \\
+DreamArt \cite{lu2025dreamart} & -- & \checkmark & -- & -- & 1 & -- & \checkmark & \checkmark & -- & \checkmark & \checkmark & -- & N/A \\
+URDF-Anything+ \cite{wu2026urdfanything_plus}& -- & \checkmark & -- & \checkmark & 1 & -- & \checkmark & \checkmark & \checkmark & \checkmark & \checkmark & \checkmark & N/A  \\ 
+ArtiLatent \cite{chen2025ArtiLatent} & -- & (\checkmark)$^o$ & -- & -- & (1)$^o$ & -- & \checkmark & \checkmark & \checkmark & \checkmark & \checkmark & \checkmark & \textasciitilde30s \\
+ArtFormer \cite{Su_2025_CVPR} & \checkmark & (\checkmark)$^o$ & -- & -- & (1)$^o$ & \checkmark & \checkmark & \checkmark & \checkmark & \checkmark & \checkmark & \checkmark & N/A \\
+
+
+\midrule
+% --- 你的方法 ---
+\rowcolor{blue!15} \textbf{Ours} & -- & -- & -- & \checkmark & 2 & -- & \checkmark & \checkmark & \checkmark & \checkmark & \checkmark & \checkmark & \best{\textasciitilde10s} \\
+\bottomrule
+\end{tabular}%
+}
+\caption{
+\textbf{Related work overview on articulated object modeling.} 
+We summarize input modalities, the number of observed articulation configurations, and output properties for various methods. 
+Icons represent: 
+\faAlignLeft\ Text, 
+\faCamera\ Vision(e.g., image or video), 
+\faProjectDiagram\ Kinematic Chain, 
+\textbf{3D} Geometry(e.g., mesh or point cloud), 
+\faLayerGroup\ Number of observed articulation configurations. 
+State counts are modality-agnostic: image, video, mesh, and point-cloud observations are counted by articulation configuration.
+0 denotes generation without an observed object state; $(\cdot)^o$ denotes optional conditioning, e.g., $(1)^o$ for one optional state and $(1^+)^o$ for one or more optional states.
+Output columns show: 
+\faBoxOpen\ BBox, 
+\textbf{3D} Geometry(e.g., mesh or point cloud), 
+\faShapes\ Segmentation, 
+\faProjectDiagram\ Structure, 
+\faLongArrowAltRight\ Axis, 
+\faArrowsAltV\ Range, 
+$\mathbf{1}^{+}$ Multi-joint support.
+($^\ast$) denotes retrieval-based geometry. 
+($^o$) indicates optional conditional inputs or outputs. 
+($^\dagger$) requires pre-segmented geometry.
+N/A indicates the inference time is not reported in the original paper.
+}
+\label{tab:related_articulation}
+\end{table}
